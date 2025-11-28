@@ -80,14 +80,14 @@ function rollDice() {
         gameState.dice1 = Math.floor(Math.random() * 6) + 1;
         gameState.dice2 = Math.floor(Math.random() * 6) + 1;
         
-        dice1El.querySelector('.dice-face').textContent = gameState.dice1;
-        dice2El.querySelector('.dice-face').textContent = gameState.dice2;
+        // Keep dice faces hidden (don't show the actual values)
+        dice1El.querySelector('.dice-face').textContent = '?';
+        dice2El.querySelector('.dice-face').textContent = '?';
         
         dice1El.classList.remove('rolling');
         dice2El.classList.remove('rolling');
         
-        // Update dice results display in sidebar
-        document.getElementById('diceResultValues').textContent = `${gameState.dice1} + ${gameState.dice2}`;
+        // Don't display dice results - keep them hidden from students
         
         // Generate and display math problem
         generateMathProblem();

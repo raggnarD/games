@@ -201,23 +201,6 @@ header h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.dice-results {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.dice-result-label {
-    font-size: 0.8em;
-    color: #666;
-    margin-bottom: 8px;
-}
-
-.dice-result-values {
-    font-size: 1.6em;
-    font-weight: bold;
-    color: #667eea;
-}
 
 .math-problem-container {
     background: #f8f9fa;

@@ -11,7 +11,7 @@ Help the dog reach the cat by solving math problems! Roll dice, solve problems, 
 
 - **Grade Level**: 1st Grade
 - **Skills**: Addition, Subtraction, Multiplication, Division, Basic Algebra
-- **Location**: `games/math-adventure/`
+- **Location**: `math-adventure/`
 
 ### 📚 Sight Words Games
 
@@ -20,28 +20,28 @@ Help the turkey collect feathers by spelling sight words!
 
 - **Grade Level**: 1st Grade
 - **Skills**: Spelling, Sight Word Recognition
-- **Location**: `games/sight-words/`
+- **Location**: `sight-words/`
 
 #### Listen & Match 🤖🦃
 Listen to words and match them with the robotic turkey!
 
 - **Grade Level**: Pre-K to 2nd Grade
 - **Skills**: Listening, Word Recognition, Audio Processing
-- **Location**: `games/listen-match/`
+- **Location**: `listen-match/`
 
 #### Ear Gears ⚙️
 Drag and drop gears to match sight words!
 
 - **Grade Level**: Pre-K to 2nd Grade
 - **Skills**: Word Matching, Drag & Drop, Visual Recognition
-- **Location**: `games/ear-gears/`
+- **Location**: `ear-gears/`
 
 #### Shark Sight 🦈
 Help the shark swim through the ocean by spelling words!
 
 - **Grade Level**: Pre-K to 2nd Grade
 - **Skills**: Typing, Spelling, Word Recognition
-- **Location**: `games/shark-sight/`
+- **Location**: `shark-sight/`
 
 ## 📁 Project Structure
 
@@ -49,31 +49,28 @@ Help the shark swim through the ocean by spelling words!
 .
 ├── index.html          # Main menu page
 ├── menu.css            # Styles for the main menu
+├── styles.css          # Shared styles
 ├── README.md           # This file
-├── specs/              # Documentation and deployment guides
-│   ├── GITHUB_SETUP.md
-│   └── SQUARESPACE_DEPLOYMENT.md
-└── games/              # All game directories
-    ├── ear-gears/
-    │   ├── index.html
-    │   ├── game.js
-    │   └── styles.css
-    ├── listen-match/
-    │   ├── index.html
-    │   ├── game.js
-    │   └── styles.css
-    ├── math-adventure/
-    │   ├── index.html
-    │   ├── game.js
-    │   └── styles.css
-    ├── shark-sight/
-    │   ├── index.html
-    │   ├── game.js
-    │   └── styles.css
-    └── sight-words/
-        ├── index.html
-        ├── game.js
-        └── styles.css
+├── ear-gears/
+│   ├── index.html
+│   ├── game.js
+│   └── styles.css
+├── listen-match/
+│   ├── index.html
+│   ├── game.js
+│   └── styles.css
+├── math-adventure/
+│   ├── index.html
+│   ├── game.js
+│   └── styles.css
+├── shark-sight/
+│   ├── index.html
+│   ├── game.js
+│   └── styles.css
+└── sight-words/
+    ├── index.html
+    ├── game.js
+    └── styles.css
 ```
 
 ## 🚀 Getting Started
@@ -109,7 +106,7 @@ Help the shark swim through the ocean by spelling words!
 
 ## 📝 Deployment
 
-See `specs/SQUARESPACE_DEPLOYMENT.md` for instructions on deploying to Squarespace or other hosting platforms.
+Simply upload all files to your web hosting service. All games work as standalone HTML files with no server-side requirements.
 
 ## 🎉 Enjoy Learning!
 

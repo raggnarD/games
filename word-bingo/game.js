@@ -52,6 +52,8 @@ function initGame() {
 // Setup event listeners
 function setupEventListeners() {
     document.getElementById('callWordBtn').addEventListener('click', callWord);
+    document.getElementById('repeatBtn').addEventListener('click', repeatWord);
+    document.getElementById('repeatSlowBtn').addEventListener('click', repeatWordSlow);
     document.getElementById('playAgainBtn').addEventListener('click', resetGame);
 }
 
@@ -172,6 +174,14 @@ function handleCellClick(row, col) {
             callWordBtn.disabled = false;
             callWordBtn.classList.remove('disabled');
             
+            // Disable repeat buttons when word is cleared
+            const repeatBtn = document.getElementById('repeatBtn');
+            const repeatSlowBtn = document.getElementById('repeatSlowBtn');
+            repeatBtn.disabled = true;
+            repeatBtn.classList.add('disabled');
+            repeatSlowBtn.disabled = true;
+            repeatSlowBtn.classList.add('disabled');
+            
             // Check for win
             if (checkWin()) {
                 gameState.gameWon = true;
@@ -189,6 +199,18 @@ function handleCellClick(row, col) {
         gameState.score = Math.max(0, gameState.score - 100);
         updateDisplay();
         showFeedback('❌ That\'s not the right word! -100 points', 'incorrect');
+        
+        // Play error sound
+        playErrorSound();
+        
+        // Make the cell turn red temporarily
+        const clickedCell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+        if (clickedCell && !clickedCell.classList.contains('marked') && !clickedCell.classList.contains('free-cell')) {
+            clickedCell.classList.add('wrong');
+            setTimeout(() => {
+                clickedCell.classList.remove('wrong');
+            }, 800);
+        }
     } else {
         showFeedback('Please call a word first!', 'warning');
     }
@@ -257,8 +279,72 @@ function callWord() {
     callWordBtn.disabled = true;
     callWordBtn.classList.add('disabled');
     
+    // Enable repeat buttons when a word is called
+    const repeatBtn = document.getElementById('repeatBtn');
+    const repeatSlowBtn = document.getElementById('repeatSlowBtn');
+    repeatBtn.disabled = false;
+    repeatBtn.classList.remove('disabled');
+    repeatSlowBtn.disabled = false;
+    repeatSlowBtn.classList.remove('disabled');
+    
     // Start/restart the score timer when a new word is called
     startScoreTimer();
+    
+    // Clear any wrong cell highlights
+    document.querySelectorAll('.bingo-cell.wrong').forEach(cell => {
+        cell.classList.remove('wrong');
+    });
+}
+
+// Repeat the current word at normal speed
+function repeatWord() {
+    if (!gameState.currentWord || gameState.gameWon) return;
+    
+    // Speak the word using Web Speech API at normal speed
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(gameState.currentWord);
+        utterance.rate = 0.8; // Same as original call
+        utterance.pitch = 1.2;
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+// Repeat the current word at 1/2x speed (slower)
+function repeatWordSlow() {
+    if (!gameState.currentWord || gameState.gameWon) return;
+    
+    // Speak the word using Web Speech API at half speed
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(gameState.currentWord);
+        utterance.rate = 0.4; // Half of 0.8
+        utterance.pitch = 1.2;
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+// Play error sound effect
+function playErrorSound() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Create a harsh error sound (low frequency, quick)
+        oscillator.frequency.value = 200;
+        oscillator.type = 'sawtooth';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+    } catch (e) {
+        // Fallback if Web Audio API is not available
+        console.log('Audio not available');
+    }
 }
 
 // Check for win condition (5 in a row, column, or diagonal)
@@ -434,6 +520,14 @@ function resetGame() {
     const callWordBtn = document.getElementById('callWordBtn');
     callWordBtn.disabled = false;
     callWordBtn.classList.remove('disabled');
+    
+    // Disable repeat buttons
+    const repeatBtn = document.getElementById('repeatBtn');
+    const repeatSlowBtn = document.getElementById('repeatSlowBtn');
+    repeatBtn.disabled = true;
+    repeatBtn.classList.add('disabled');
+    repeatSlowBtn.disabled = true;
+    repeatSlowBtn.classList.add('disabled');
     
     // Cancel any ongoing speech
     if ('speechSynthesis' in window) {

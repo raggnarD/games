@@ -94,6 +94,13 @@ header h1 {
     margin-bottom: 24px;
 }
 
+.repeat-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
 .btn-primary {
     padding: 12px 32px;
     font-size: 1.1em;
@@ -128,6 +135,45 @@ header h1 {
 
 .btn-primary:disabled:hover,
 .btn-primary.disabled:hover {
+    transform: none;
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.2);
+}
+
+/* Repeat Buttons */
+.btn-repeat {
+    padding: 10px 20px;
+    font-size: 1.3em;
+    font-weight: bold;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    min-width: 60px;
+}
+
+.btn-repeat:hover:not(:disabled):not(.disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+}
+
+.btn-repeat:active:not(:disabled):not(.disabled) {
+    transform: translateY(0);
+}
+
+.btn-repeat:disabled,
+.btn-repeat.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.2);
+}
+
+.btn-repeat:disabled:hover,
+.btn-repeat.disabled:hover {
     transform: none;
     box-shadow: 0 2px 6px rgba(102, 126, 234, 0.2);
 }
@@ -225,6 +271,19 @@ header h1 {
     font-size: 1.1em;
     font-weight: bold;
     cursor: default;
+}
+
+.bingo-cell.wrong {
+    background: #f8d7da !important;
+    border-color: #dc3545 !important;
+    color: #721c24 !important;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
 /* Game Info */

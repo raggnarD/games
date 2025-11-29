@@ -36,13 +36,16 @@ const gameState = {
     markedCells: [], // Array of marked cell positions [row, col]
     currentWord: '', // Currently called word
     activeGrades: ['prek', 'k', '1st', '2nd'], // Default active grades
-    gameWon: false
+    gameWon: false,
+    score: 1000, // Starting score
+    scoreTimer: null // Timer for decreasing score
 };
 
 // Initialize the game
 function initGame() {
     setupEventListeners();
     createBingoCard();
+    loadLeaderboard();
     updateDisplay();
 }
 
@@ -159,9 +162,18 @@ function handleCellClick(row, col) {
             updateDisplay();
             showFeedback('✅ Correct!', 'correct');
             
+            // Clear current word and re-enable the button
+            gameState.currentWord = '';
+            document.getElementById('currentWord').textContent = 'Click "Call Word" for next word!';
+            const callWordBtn = document.getElementById('callWordBtn');
+            callWordBtn.disabled = false;
+            callWordBtn.classList.remove('disabled');
+            
             // Check for win
             if (checkWin()) {
                 gameState.gameWon = true;
+                stopScoreTimer();
+                saveScoreToLeaderboard(gameState.score);
                 setTimeout(() => {
                     showWinScreen();
                 }, 500);
@@ -170,7 +182,10 @@ function handleCellClick(row, col) {
             showFeedback('This word is already marked!', 'warning');
         }
     } else if (gameState.currentWord) {
-        showFeedback('❌ That\'s not the right word!', 'incorrect');
+        // Wrong guess - subtract 100 points
+        gameState.score = Math.max(0, gameState.score - 100);
+        updateDisplay();
+        showFeedback('❌ That\'s not the right word! -100 points', 'incorrect');
     } else {
         showFeedback('Please call a word first!', 'warning');
     }
@@ -220,8 +235,8 @@ function callWord() {
     const randomIndex = Math.floor(Math.random() * availableWords.length);
     gameState.currentWord = availableWords[randomIndex];
     
-    // Display the word
-    document.getElementById('currentWord').textContent = `"${gameState.currentWord}"`;
+    // Don't display the word - only show generic message
+    document.getElementById('currentWord').textContent = 'Listen carefully...';
     
     // Speak the word using Web Speech API
     if ('speechSynthesis' in window) {
@@ -231,7 +246,18 @@ function callWord() {
         window.speechSynthesis.speak(utterance);
     }
     
-    showFeedback(`Listen: "${gameState.currentWord}"`, 'info');
+    // Don't show the word in feedback - just indicate a word was called
+    showFeedback('Word called! Find it on your card!', 'info');
+    
+    // Disable the button until player selects the correct word
+    const callWordBtn = document.getElementById('callWordBtn');
+    callWordBtn.disabled = true;
+    callWordBtn.classList.add('disabled');
+    
+    // Start the score timer if not already running
+    if (!gameState.scoreTimer) {
+        startScoreTimer();
+    }
 }
 
 // Check for win condition (5 in a row, column, or diagonal)
@@ -299,8 +325,32 @@ function showFeedback(message, type) {
     }, 2000);
 }
 
+// Start score timer (decreases score by 20 every second)
+function startScoreTimer() {
+    if (gameState.scoreTimer) {
+        clearInterval(gameState.scoreTimer);
+    }
+    gameState.scoreTimer = setInterval(() => {
+        if (!gameState.gameWon) {
+            gameState.score = Math.max(0, gameState.score - 20);
+            updateDisplay();
+        }
+    }, 1000);
+}
+
+// Stop score timer
+function stopScoreTimer() {
+    if (gameState.scoreTimer) {
+        clearInterval(gameState.scoreTimer);
+        gameState.scoreTimer = null;
+    }
+}
+
 // Update display
 function updateDisplay() {
+    // Update score
+    document.getElementById('currentScore').textContent = gameState.score;
+    
     if (gameState.gameWon) {
         document.getElementById('gameStatus').textContent = 'BINGO!';
     } else {
@@ -311,8 +361,53 @@ function updateDisplay() {
 
 // Show win screen
 function showWinScreen() {
+    const scoreText = document.getElementById('finalScore');
+    if (scoreText) {
+        scoreText.textContent = `Final Score: ${gameState.score} points`;
+    }
     document.getElementById('winScreen').style.display = 'block';
     updateDisplay();
+    updateLeaderboard();
+}
+
+// Save score to leaderboard
+function saveScoreToLeaderboard(score) {
+    let leaderboard = JSON.parse(sessionStorage.getItem('wordBingoLeaderboard') || '[]');
+    leaderboard.push({
+        score: score,
+        date: new Date().toLocaleString()
+    });
+    // Sort by score (highest first) and keep top 10
+    leaderboard.sort((a, b) => b.score - a.score);
+    leaderboard = leaderboard.slice(0, 10);
+    sessionStorage.setItem('wordBingoLeaderboard', JSON.stringify(leaderboard));
+}
+
+// Load leaderboard
+function loadLeaderboard() {
+    updateLeaderboard();
+}
+
+// Update leaderboard display
+function updateLeaderboard() {
+    const leaderboard = JSON.parse(sessionStorage.getItem('wordBingoLeaderboard') || '[]');
+    const leaderboardList = document.getElementById('leaderboardList');
+    leaderboardList.innerHTML = '';
+    
+    if (leaderboard.length === 0) {
+        leaderboardList.innerHTML = '<div class="leaderboard-empty">No scores yet!</div>';
+        return;
+    }
+    
+    leaderboard.forEach((entry, index) => {
+        const entryEl = document.createElement('div');
+        entryEl.className = 'leaderboard-entry';
+        entryEl.innerHTML = `
+            <span class="leaderboard-rank">${index + 1}.</span>
+            <span class="leaderboard-score">${entry.score}</span>
+        `;
+        leaderboardList.appendChild(entryEl);
+    });
 }
 
 // Reset game
@@ -320,6 +415,8 @@ function resetGame() {
     gameState.markedCells = [];
     gameState.currentWord = '';
     gameState.gameWon = false;
+    gameState.score = 1000; // Reset to starting score
+    stopScoreTimer();
     
     // Clear feedback
     const feedbackEl = document.getElementById('feedback');
@@ -328,6 +425,11 @@ function resetGame() {
     
     // Reset current word display
     document.getElementById('currentWord').textContent = 'Click "Call Word" to start!';
+    
+    // Re-enable the call word button
+    const callWordBtn = document.getElementById('callWordBtn');
+    callWordBtn.disabled = false;
+    callWordBtn.classList.remove('disabled');
     
     // Cancel any ongoing speech
     if ('speechSynthesis' in window) {

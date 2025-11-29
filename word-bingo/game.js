@@ -162,6 +162,9 @@ function handleCellClick(row, col) {
             updateDisplay();
             showFeedback('✅ Correct!', 'correct');
             
+            // Stop the timer when correct word is guessed
+            stopScoreTimer();
+            
             // Clear current word and re-enable the button
             gameState.currentWord = '';
             document.getElementById('currentWord').textContent = 'Click "Call Word" for next word!';
@@ -254,10 +257,8 @@ function callWord() {
     callWordBtn.disabled = true;
     callWordBtn.classList.add('disabled');
     
-    // Start the score timer if not already running
-    if (!gameState.scoreTimer) {
-        startScoreTimer();
-    }
+    // Start/restart the score timer when a new word is called
+    startScoreTimer();
 }
 
 // Check for win condition (5 in a row, column, or diagonal)
@@ -326,12 +327,15 @@ function showFeedback(message, type) {
 }
 
 // Start score timer (decreases score by 20 every second)
+// Only runs when there's an active currentWord
 function startScoreTimer() {
+    // Stop any existing timer first
     if (gameState.scoreTimer) {
         clearInterval(gameState.scoreTimer);
     }
     gameState.scoreTimer = setInterval(() => {
-        if (!gameState.gameWon) {
+        // Only decrease score if there's an active word and game isn't won
+        if (gameState.currentWord && !gameState.gameWon) {
             gameState.score = Math.max(0, gameState.score - 20);
             updateDisplay();
         }

@@ -11,7 +11,7 @@ Help the dog reach the cat by solving math problems! Roll dice, solve problems, 
 
 - **Grade Level**: 1st Grade
 - **Skills**: Addition, Subtraction, Multiplication, Division, Basic Algebra
-- **Location**: `math-adventure/`
+- **Location**: `games/math-adventure/`
 
 ### 📚 Sight Words Games
 
@@ -20,28 +20,28 @@ Help the turkey collect feathers by spelling sight words!
 
 - **Grade Level**: 1st Grade
 - **Skills**: Spelling, Sight Word Recognition
-- **Location**: `sight-words/`
+- **Location**: `games/sight-words/`
 
 #### Listen & Match 🤖🦃
 Listen to words and match them with the robotic turkey!
 
 - **Grade Level**: Pre-K to 2nd Grade
 - **Skills**: Listening, Word Recognition, Audio Processing
-- **Location**: `listen-match/`
+- **Location**: `games/listen-match/`
 
 #### Ear Gears ⚙️
 Drag and drop gears to match sight words!
 
 - **Grade Level**: Pre-K to 2nd Grade
 - **Skills**: Word Matching, Drag & Drop, Visual Recognition
-- **Location**: `ear-gears/`
+- **Location**: `games/ear-gears/`
 
 #### Shark Sight 🦈
 Help the shark swim through the ocean by spelling words!
 
 - **Grade Level**: Pre-K to 2nd Grade
 - **Skills**: Typing, Spelling, Word Recognition
-- **Location**: `shark-sight/`
+- **Location**: `games/shark-sight/`
 
 ## 📁 Project Structure
 

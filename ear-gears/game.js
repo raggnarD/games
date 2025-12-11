@@ -236,6 +236,7 @@ function createGearSVG(size, color) {
     const center = size / 2;
     const outerRadius = size * 0.4;
     const innerRadius = size * 0.25;
+    const whiteCircleRadius = size * 0.22; // Large white circle to fit the word text
     const teeth = 8;
     const toothLength = size * 0.1;
     
@@ -259,8 +260,7 @@ function createGearSVG(size, color) {
         <svg class="gear-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
             <circle cx="${center}" cy="${center}" r="${outerRadius + toothLength}" fill="${color}" opacity="0.2"/>
             <path d="${path}" fill="${color}" stroke="#2c3e50" stroke-width="2"/>
-            <circle cx="${center}" cy="${center}" r="${innerRadius}" fill="#2c3e50"/>
-            <circle cx="${center}" cy="${center}" r="${innerRadius * 0.6}" fill="white"/>
+            <circle cx="${center}" cy="${center}" r="${whiteCircleRadius}" fill="white"/>
         </svg>
     `;
 }

@@ -131,6 +131,115 @@ footer {
     margin-top: 20px;
 }
 
+/* Welcome Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    margin: 10% auto;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideDown 0.4s ease;
+    border: 4px solid #667eea;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #667eea;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #764ba2;
+    transform: scale(1.2);
+}
+
+.modal-content h2 {
+    color: #667eea;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal-body {
+    margin: 30px 0;
+    line-height: 1.8;
+}
+
+.modal-body p {
+    color: #666;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-body strong {
+    color: #667eea;
+    font-weight: bold;
+}
+
+.modal-button {
+    display: block;
+    margin: 30px auto 0;
+    padding: 15px 40px;
+    font-size: 1.3em;
+    font-weight: bold;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.modal-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.modal-button:active {
+    transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
     .games-grid {
         grid-template-columns: 1fr;
@@ -154,6 +263,24 @@ footer {
 
     .menu-container {
         padding: 20px;
+    }
+
+    .modal-content {
+        margin: 20% auto;
+        padding: 30px 20px;
+    }
+
+    .modal-content h2 {
+        font-size: 2em;
+    }
+
+    .modal-body p {
+        font-size: 1em;
+    }
+
+    .modal-button {
+        padding: 12px 30px;
+        font-size: 1.1em;
     }
 }
 
